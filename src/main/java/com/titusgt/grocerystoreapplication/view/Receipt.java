@@ -29,6 +29,13 @@ public class Receipt {
 		BigDecimal totalPrice = new BigDecimal(0);
 		Collections.sort(productList, Product.COMPARE_BY_PRODUCTNAME);
 
+		printProducts(productList, totalPrice);
+		printFooter(totalPrice);
+
+		return sb.toString();
+	}
+
+	private void printProducts(List<Product> productList, BigDecimal totalPrice) {
 		for (Product product : productList) {
 
 			sb.append("\n" + StringUtils.rightPad(product.getName(), ROW_LENGTH / 2) +
@@ -37,16 +44,12 @@ public class Receipt {
 			if (product.getType().equals(ProductType.BULK.get())) {
 				String pricePerItem = df.format(product.getPrice().divide(new BigDecimal(product.getWeight())));
 				sb.append("\n" + "- 1 @ " + pricePerItem + "\tX " + product.getWeight() + "KG");
-			} else if (product.getType().equals(ProductType.SALE.get())
-				&& product.getPrice().compareTo(new BigDecimal(0)) == 0) {
+			} else if (product.getType().equals(ProductType.SALE.get()) && product.getPrice().compareTo(new BigDecimal(0)) == 0) {
 				sb.append("\n" + "- " + SaleType.BUY1_GET1.get());
 			}
 
 			totalPrice = totalPrice.add(product.getPrice());
 		}
-		printFooter(totalPrice);
-
-		return sb.toString();
 	}
 
 	private void printHeader() {
