@@ -11,25 +11,18 @@ public class GroceryStoreCalculator {
 	HashMap<Integer,Integer> frequency = new HashMap<>();
 
 	public BigDecimal calculateItemPrice(Product product) {
-
-		BigDecimal price = new BigDecimal(0);
 		try {
 			if (product != null) {
 				if (product.getType().equals(ProductType.SALE.get()) && product.getFrequency() % 2 == 0){
-					price = new BigDecimal(0);
+					return new BigDecimal(0);
 				} else {
-					price = product.getPrice();
+					return product.getPrice();
 				}
 			}
 		} catch (Exception ex) {
 			return new BigDecimal(0);
 		}
-
-		return price;
-	}
-
-	public Product getProduct(String productCode, int productFrequency) {
-		return new GroceryStoreService().getItem(Integer.parseInt(productCode), productFrequency);
+		return null;
 	}
 
 	public int getFrequency(int productCode) {

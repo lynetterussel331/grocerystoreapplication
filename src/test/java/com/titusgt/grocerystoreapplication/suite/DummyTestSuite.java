@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({CalculateTestSingle.class, CalculateTestMultiple.class})
+//@SuiteClasses({CalculateTestSingle.class, CalculateTestMultiple.class})
+@SuiteClasses({CalculateTestSingle.class})
 public class DummyTestSuite {
 
 }

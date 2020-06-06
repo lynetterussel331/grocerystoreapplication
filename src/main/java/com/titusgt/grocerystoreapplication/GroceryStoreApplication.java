@@ -27,7 +27,7 @@ public class GroceryStoreApplication {
 			do {
 				System.out.print("Scan Product Code: ");
 				productCode = scanner.nextLine();
-				GroceryStoreCashier.processItems(productCode, calculator, scanner, totalPrice, productList);
+				new GroceryStoreCashier().processItems(productCode, calculator, scanner, totalPrice, productList);
 			} while (!productCode.isEmpty());
 
 			GroceryStoreCashier.printReceipt(productList);

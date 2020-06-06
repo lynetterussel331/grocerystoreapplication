@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
-public class GroceryStoreService {
+public class GroceryStoreService implements Cloneable {
 
 	List<Product> productList = new ArrayList<>();
 
@@ -24,17 +24,19 @@ public class GroceryStoreService {
 		productList.add(new Product(9, "ARIEL DETERGENT", ProductType.SALE.get(), new BigDecimal("56.75")));
 		productList.add(new Product(10, "TIDE DETERGENT", ProductType.SALE.get(), new BigDecimal("75.25")));
 	}
-	
-	public Product getItem(int productCode, int productFrequency) {
 
-		Product product = productList.stream()
-			.filter(prod -> prod.getCode() == productCode)
+	public Product getProduct(int code, int frequency) {
+
+		Product fetchedProduct = productList.stream()
+			.filter(prod -> prod.getCode() == code)
 			.findAny().orElse(null);
+
+		Product product = fetchedProduct;
 
 		if (product != null) {
 			if (product.getType().equals(ProductType.SALE.get())) {
-				product.setFrequency(productFrequency);
-				if (productFrequency % 2 == 0) {
+				product.setFrequency(frequency);
+				if (frequency % 2 == 0) {
 					product.setPrice(new BigDecimal(0));
 				}
 			}
@@ -42,7 +44,7 @@ public class GroceryStoreService {
 		}
 		return null;
 	}
-	
+
 	public void displayItemsByType(String type, int textLength) {
 
 		List<String> columns = Arrays.asList("PRODUCT CODE", "PRODUCT NAME", "PRICE");

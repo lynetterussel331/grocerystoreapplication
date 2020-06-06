@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 
 public class ProductPrice {
 
-	public BigDecimal extractItemPrice(String productCode, String productType) {
+	public BigDecimal extractItemPrice(int code, String type) {
 
-		int productFrequency = new GroceryStoreCalculator().getFrequency(Integer.parseInt(productCode));
-		Product product = new GroceryStoreService().getItem(Integer.parseInt(productCode), productFrequency);
+		int frequency = new GroceryStoreCalculator().getFrequency(code);
+		Product product = new GroceryStoreService().getProduct(code, frequency);
 		BigDecimal itemPrice = new BigDecimal(0);
 		
-		if (product.getType().equals(productType))
+		if (product.getType().equals(type))
 			itemPrice = product.getPrice();
 		
 		return itemPrice;

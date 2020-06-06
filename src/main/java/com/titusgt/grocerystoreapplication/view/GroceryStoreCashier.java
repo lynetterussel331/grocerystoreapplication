@@ -21,7 +21,7 @@ public class GroceryStoreCashier {
         System.out.println("\n" + StringUtils.center("", textLength, "="));
     }
 
-    public static void processItems(String productCode, GroceryStoreCalculator calculator,
+    public void processItems(String productCode, GroceryStoreCalculator calculator,
         Scanner scanner, BigDecimal totalPrice, List<Product> productList) {
         if (Validation.isNumeric(productCode)) {
             try {
@@ -37,10 +37,11 @@ public class GroceryStoreCashier {
         }
     }
 
-    private static Product inputItems(String productCode, GroceryStoreCalculator calculator, Scanner scanner) throws Exception {
+    private Product inputItems(String productCode, GroceryStoreCalculator calculator, Scanner scanner) throws Exception {
 
-        int frequency = calculator.getFrequency(Integer.parseInt(productCode));
-        Product product = calculator.getProduct(productCode, frequency);
+        int code = Integer.parseInt(productCode);
+        int frequency = calculator.getFrequency(code);
+        Product product = new GroceryStoreService().getProduct(code, frequency);
 
         if (product != null) {
             System.out.println("Product Name:\t" + product.getName());
