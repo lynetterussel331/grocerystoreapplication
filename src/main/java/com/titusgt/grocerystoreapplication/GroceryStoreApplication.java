@@ -14,12 +14,13 @@ import com.titusgt.grocerystoreapplication.service.GroceryStoreService;
 import org.apache.commons.lang3.StringUtils;
 
 public class GroceryStoreApplication {
-	
+
+	static DecimalFormat df = new DecimalFormat("#,##0.00");
+
 	public static void main(String[] args) {
+
 		GroceryStoreCalculator calculator = new GroceryStoreCalculator();
 		List<Product> productList = new ArrayList<>();
-
-		DecimalFormat df = new DecimalFormat("#,##0.00");
 		Scanner scanner = new Scanner(System.in);
 
 		BigDecimal totalPrice = new BigDecimal(0);
@@ -32,68 +33,26 @@ public class GroceryStoreApplication {
 				System.out.print("Scan Product Code: ");
 				productCode = scanner.nextLine();
 
-				String errMsg = "";
-				
 				if (Validation.isNumeric(productCode)) {
-
-					int productFrequency = calculator.getProductFrequency(Integer.parseInt(productCode));
-					
-					Product gs = calculator.getGroceryItem(productCode, productFrequency);
-					Product order = new Product();
-					
-					if (gs != null) {
-						
-						System.out.println("Product Name:\t" + gs.getName());
-						
-						order.setCode(gs.getCode());
-						order.setName(gs.getName());
-						order.setType(gs.getType());
-						order.setPrice(gs.getPrice());
-						
-						if (gs.getType().equals(ProductType.BULK.get())) {
-
-							System.out.println("Price: \t\t" + df.format(gs.getPrice()) + "/kg");
-							System.out.print("Weight: \t");
-							String weight = scanner.nextLine();
-							
-							if (Validation.isDecimal(weight)) {
-								double dWeight = Double.parseDouble(weight);
-								order.setWeight(dWeight);
-								order.setPrice(gs.getPrice().multiply(BigDecimal.valueOf(dWeight)));
-							} else {
-								errMsg = "Invalid weight!";
-							}
-							
-						} else if (gs.getType().equals(ProductType.SALE.get())) {
-							
-							order.setSaleType(gs.getSaleType());
-							order.setFrequency(gs.getFrequency());
-						}
-						
-						if (errMsg.isEmpty()) {
-							totalPrice = totalPrice.add(calculator.calculateProduct(order));
-							
-							productList.add(order);
-							
-							System.out.println("Subtotal: \t" + df.format(order.getPrice()));
-							System.out.println("Total Price: \t" + df.format(totalPrice));
-						} else {
-							calculator.setProductFrequency(gs.getCode(), -1);
-						}
-						
-					} else {
-						errMsg = "Entered Product is not existing!";
-					} 
-					
+					try {
+						Product product = inputItems(productCode, calculator, scanner);
+						totalPrice = totalPrice.add(calculator.calculateProduct(product));
+						productList.add(product);
+						printPrice(product, totalPrice);
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
 				} else if (!productCode.isEmpty()) {
-					errMsg = "Invalid Product Code!";
+					System.out.println("Invalid Product Code!");
 				}
-
-				System.out.println(errMsg);
 	
 			} while (!productCode.isEmpty());
-			
-			System.out.println(new Receipt(60).printReceipt(productList));
+
+			if (productList.size() > 0) {
+				System.out.println(new Receipt(60).printReceipt(productList));
+			} else {
+				System.out.println("NO ACTUAL ORDER!");
+			}
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -106,5 +65,46 @@ public class GroceryStoreApplication {
 		System.out.println(StringUtils.center(header, textLength, "="));
 		new GroceryStoreService().displayItemsByType(type, textLength);
 		System.out.println(StringUtils.center("", textLength, "="));
+	}
+
+	private static void printPrice(Product product, BigDecimal totalPrice) {
+		System.out.println("Subtotal: \t" + df.format(product.getPrice()));
+		System.out.println("Total Price: \t" + df.format(totalPrice));
+	}
+
+	private static Product inputItems(String productCode, GroceryStoreCalculator calculator, Scanner scanner)
+		throws Exception {
+
+		int productFrequency = calculator.getProductFrequency(Integer.parseInt(productCode));
+		Product product = calculator.getGroceryItem(productCode, productFrequency);
+
+		if (product != null) {
+
+			System.out.println("Product Name:\t" + product.getName());
+
+			if (product.getType().equals(ProductType.BULK.get())) {
+
+				System.out.println("Price: \t\t" + df.format(product.getPrice()) + "/kg");
+				System.out.print("Weight: \t");
+				String inputWeight = scanner.nextLine();
+
+				if (Validation.isDecimal(inputWeight)) {
+					double weight = Double.parseDouble(inputWeight);
+					product.setWeight(weight);
+					product.setPrice(product.getPrice().multiply(BigDecimal.valueOf(weight)));
+				} else {
+					throw new Exception("Invalid weight!");
+				}
+
+			} else if (product.getType().equals(ProductType.SALE.get())) {
+				product.setSaleType(product.getSaleType());
+				product.setFrequency(product.getFrequency());
+			}
+
+		} else {
+			throw new Exception("Entered Product is not existing!");
+		}
+
+		return product;
 	}
 }
