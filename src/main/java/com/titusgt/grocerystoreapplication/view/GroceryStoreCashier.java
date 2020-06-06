@@ -1,9 +1,9 @@
 package com.titusgt.grocerystoreapplication.view;
 
 import com.titusgt.grocerystoreapplication.GroceryStoreCalculator;
+import com.titusgt.grocerystoreapplication.enums.ProductType;
 import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.service.GroceryStoreService;
-import com.titusgt.grocerystoreapplication.enums.ProductType;
 import com.titusgt.grocerystoreapplication.utils.Validation;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

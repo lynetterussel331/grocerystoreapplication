@@ -1,16 +1,14 @@
 package com.titusgt.grocerystoreapplication;
 
 import com.titusgt.grocerystoreapplication.enums.ProductType;
+import com.titusgt.grocerystoreapplication.model.Product;
+import com.titusgt.grocerystoreapplication.view.Receipt;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import com.titusgt.grocerystoreapplication.model.Product;
-import com.titusgt.grocerystoreapplication.view.Receipt;
 
 public class CalculateTestMultiple {
 

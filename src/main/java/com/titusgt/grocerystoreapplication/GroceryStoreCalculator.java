@@ -1,11 +1,10 @@
 package com.titusgt.grocerystoreapplication;
 
 import com.titusgt.grocerystoreapplication.enums.ProductType;
-import java.math.BigDecimal;
-import java.util.HashMap;
-
 import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.service.GroceryStoreService;
+import java.math.BigDecimal;
+import java.util.HashMap;
 
 public class GroceryStoreCalculator {
 

@@ -2,6 +2,7 @@ package com.titusgt.grocerystoreapplication.view;
 
 import com.titusgt.grocerystoreapplication.enums.ProductType;
 import com.titusgt.grocerystoreapplication.enums.SaleType;
+import com.titusgt.grocerystoreapplication.model.Product;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -9,8 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Collections;
 import java.util.List;
-
-import com.titusgt.grocerystoreapplication.model.Product;
 import org.apache.commons.lang3.StringUtils;
 
 public class Receipt {

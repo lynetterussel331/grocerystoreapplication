@@ -1,12 +1,11 @@
 package com.titusgt.grocerystoreapplication.service;
 
 import com.titusgt.grocerystoreapplication.enums.ProductType;
+import com.titusgt.grocerystoreapplication.model.Product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.titusgt.grocerystoreapplication.model.Product;
 import org.apache.commons.lang3.StringUtils;
 
 public class GroceryStoreService {

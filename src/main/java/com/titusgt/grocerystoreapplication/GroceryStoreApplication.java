@@ -1,9 +1,8 @@
 package com.titusgt.grocerystoreapplication;
 
 import com.titusgt.grocerystoreapplication.enums.ProductType;
-import com.titusgt.grocerystoreapplication.view.GroceryStoreCashier;
 import com.titusgt.grocerystoreapplication.model.Product;
-
+import com.titusgt.grocerystoreapplication.view.GroceryStoreCashier;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

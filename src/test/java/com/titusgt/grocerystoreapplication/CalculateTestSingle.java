@@ -1,15 +1,14 @@
 package com.titusgt.grocerystoreapplication;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import com.titusgt.grocerystoreapplication.enums.ProductType;
-import java.math.BigDecimal;
-import java.util.Random;
-
-import org.junit.Test;
-
 import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.utils.Validation;
+import java.math.BigDecimal;
+import java.util.Random;
+import org.junit.Test;
 
 public class CalculateTestSingle
 {
