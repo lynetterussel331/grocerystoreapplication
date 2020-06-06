@@ -14,7 +14,6 @@ public class Product {
 	private String type;
 	private BigDecimal price;
 	private double weight;
-	private String saleType;
 	private int frequency;
 
 	public Product() {}
@@ -24,14 +23,6 @@ public class Product {
 		this.name = name;
 		this.type = type;
 		this.price = price;
-	}
-
-	public Product(int code, String name, String type, BigDecimal price, String saleType) {
-		this.code = code;
-		this.name = name;
-		this.type = type;
-		this.price = price;
-		this.saleType = saleType;
 	}
 
 	public static Comparator<Product> COMPARE_BY_PRODUCTNAME = new Comparator<Product>() {

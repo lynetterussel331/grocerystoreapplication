@@ -1,6 +1,6 @@
 package com.titusgt.grocerystoreapplication;
 
-import com.titusgt.grocerystoreapplication.utils.ProductType;
+import com.titusgt.grocerystoreapplication.enums.ProductType;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
@@ -9,49 +9,36 @@ import com.titusgt.grocerystoreapplication.service.GroceryStoreService;
 
 public class GroceryStoreCalculator {
 
-	HashMap<Integer,Integer> productFrequency = new HashMap<Integer,Integer>();
-	
-	public BigDecimal calculateProduct(Product gs) {
-		
-		BigDecimal totalPrice = new BigDecimal(0);
-		
+	HashMap<Integer,Integer> frequency = new HashMap<>();
+
+	public BigDecimal calculateItemPrice(Product product) {
+
+		BigDecimal price = new BigDecimal(0);
 		try {
-			if (gs != null) {
-				
-				if (gs.getType().equals(ProductType.SALE.get()) && gs.getFrequency()%2 == 0){
-					totalPrice = new BigDecimal(0);
+			if (product != null) {
+				if (product.getType().equals(ProductType.SALE.get()) && product.getFrequency() % 2 == 0){
+					price = new BigDecimal(0);
 				} else {
-					totalPrice = gs.getPrice();
+					price = product.getPrice();
 				}
 			}
 		} catch (Exception ex) {
 			return new BigDecimal(0);
 		}
-	
-		return totalPrice;
+
+		return price;
 	}
-	
-	public Product getGroceryItem(String productCode, int productFrequency) {
-		
+
+	public Product getProduct(String productCode, int productFrequency) {
 		return new GroceryStoreService().getItem(Integer.parseInt(productCode), productFrequency);
 	}
-	
-	public int getProductFrequency(int productCode) {
-		
-		if (productFrequency.containsKey(productCode)) {
-			productFrequency.put(productCode, (productFrequency.get(productCode)+1));
+
+	public int getFrequency(int productCode) {
+		if (frequency.containsKey(productCode)) {
+			frequency.put(productCode, (frequency.get(productCode)+1));
+		} else {
+			frequency.put(productCode, 1);
 		}
-		else {
-			productFrequency.put(productCode, 1);
-		}
-		
-		return productFrequency.get(productCode);
-	}
-	
-	public void setProductFrequency(int productCode, int num) {
-		
-		if (productFrequency.containsKey(productCode)) {
-			productFrequency.put(productCode, (productFrequency.get(productCode)+num));
-		}
+		return frequency.get(productCode);
 	}
 }

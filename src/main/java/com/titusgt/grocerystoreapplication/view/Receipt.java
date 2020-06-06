@@ -1,6 +1,7 @@
 package com.titusgt.grocerystoreapplication.view;
 
-import com.titusgt.grocerystoreapplication.utils.ProductType;
+import com.titusgt.grocerystoreapplication.enums.ProductType;
+import com.titusgt.grocerystoreapplication.enums.SaleType;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
@@ -39,7 +40,7 @@ public class Receipt {
 				sb.append("\n" + "- 1 @ " + pricePerItem + "\tX " + product.getWeight() + "KG");
 			} else if (product.getType().equals(ProductType.SALE.get())
 				&& product.getPrice().compareTo(new BigDecimal(0)) == 0) {
-				sb.append("\n" + "- " + product.getSaleType());
+				sb.append("\n" + "- " + SaleType.BUY1_GET1.get());
 			}
 
 			totalPrice = totalPrice.add(product.getPrice());

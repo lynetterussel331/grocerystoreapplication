@@ -1,11 +1,10 @@
-package com.titusgt.grocerystoreapplication.utils;
+package com.titusgt.grocerystoreapplication.enums;
 
 public enum ProductType {
 
     PIECE("PC"),
     BULK("BULK"),
-    SALE("SALE"),
-    BUY1_GET1("Buy 1 Get 1");
+    SALE("SALE");
 
     private String label;
 

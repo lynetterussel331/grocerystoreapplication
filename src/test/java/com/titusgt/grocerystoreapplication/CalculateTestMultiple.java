@@ -1,8 +1,6 @@
 package com.titusgt.grocerystoreapplication;
 
-import static org.junit.Assert.assertEquals;
-
-import com.titusgt.grocerystoreapplication.utils.ProductType;
+import com.titusgt.grocerystoreapplication.enums.ProductType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +14,18 @@ import com.titusgt.grocerystoreapplication.view.Receipt;
 
 public class CalculateTestMultiple {
 
-	private Product gs;
-	private GroceryStoreCalculator gsc;
+	private Product product;
+	private GroceryStoreCalculator calculator;
 	private ProductPrice extract;
 	private Random rand;
 	private List<Product> groupOfProducts;
 	
 	@Before
 	public void setUp() {
-		gsc = new GroceryStoreCalculator();
+		calculator = new GroceryStoreCalculator();
 		extract = new ProductPrice();
 		rand = new Random();
-		groupOfProducts = new ArrayList<Product>();
+		groupOfProducts = new ArrayList<>();
 	}
 	
 	// POSITIVE SCENARIOS
@@ -47,13 +45,13 @@ public class CalculateTestMultiple {
 			int weight = rand.nextInt(10) + 1;
 			String productCode2= (rand.nextInt(3) + 4) + ""; // PRODUCT FREQUENCY (BULK)
 			
-			gs = gsc.getGroceryItem(productCode2, 0);
-			gs.setWeight(weight);
-			gs.setPrice(gs.getPrice().multiply(new BigDecimal(weight)));
-			totalPrice = totalPrice.add(gsc.calculateProduct(gs));
+			product = calculator.getProduct(productCode2, 0);
+			product.setWeight(weight);
+			product.setPrice(product.getPrice().multiply(new BigDecimal(weight)));
+			totalPrice = totalPrice.add(calculator.calculateItemPrice(product));
 			expectedPrice = expectedPrice.add(extract.extractItemPrice(productCode2,
 				ProductType.BULK.get()).multiply(BigDecimal.valueOf(weight)));
-			groupOfProducts.add(gs);
+			groupOfProducts.add(product);
 		}
 		
 		// SALE
@@ -65,11 +63,11 @@ public class CalculateTestMultiple {
 	    	BigDecimal extractedItemPrice = extract.extractItemPrice(productCode3, ProductType.SALE.get());
 
 			for (int j = 1; j <= currentProductFreq; j++) {
-	    		int productFrequency = gsc.getProductFrequency(Integer.parseInt(productCode3));
-				gs = gsc.getGroceryItem(productCode3, productFrequency);
-	    		gs.setFrequency(productFrequency);
-				totalPrice = totalPrice.add(gsc.calculateProduct(gs));
-				groupOfProducts.add(gs);
+	    		int productFrequency = calculator.getFrequency(Integer.parseInt(productCode3));
+				product = calculator.getProduct(productCode3, productFrequency);
+	    		product.setFrequency(productFrequency);
+				totalPrice = totalPrice.add(calculator.calculateItemPrice(product));
+				groupOfProducts.add(product);
 			}
 			
 			// Computing expected Price
@@ -83,10 +81,10 @@ public class CalculateTestMultiple {
 			
 			String productCode1 = (rand.nextInt(3) + 1) + ""; // PRODUCT FREQUENCY (PC)
 			
-			gs = gsc.getGroceryItem(productCode1, 0);
-			totalPrice = totalPrice.add(gsc.calculateProduct(gs));
+			product = calculator.getProduct(productCode1, 0);
+			totalPrice = totalPrice.add(calculator.calculateItemPrice(product));
 			expectedPrice = expectedPrice.add(extract.extractItemPrice(productCode1, ProductType.PIECE.get()));
-			groupOfProducts.add(gs);
+			groupOfProducts.add(product);
 		}
 
 		assert(expectedPrice.compareTo(totalPrice) == 0);
