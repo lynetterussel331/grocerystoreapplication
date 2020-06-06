@@ -9,25 +9,25 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.titusgt.grocerystoreapplication.model.GroceryStore;
+import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.utils.Constants;
 import com.titusgt.grocerystoreapplication.utils.Utils;
 import com.titusgt.grocerystoreapplication.view.Receipt;
 
 public class CalculateTestMultiple {
 
-	private GroceryStore gs;
+	private Product gs;
 	private GroceryStoreCalculator gsc;
 	private ProductPrice extract;
 	private Random rand;
-	private List<GroceryStore> groupOfProducts;
+	private List<Product> groupOfProducts;
 	
 	@Before
 	public void setUp() {
 		gsc = new GroceryStoreCalculator();
 		extract = new ProductPrice();
 		rand = new Random();
-		groupOfProducts = new ArrayList<GroceryStore>();
+		groupOfProducts = new ArrayList<Product>();
 	}
 	
 	// POSITIVE SCENARIOS
@@ -66,7 +66,7 @@ public class CalculateTestMultiple {
 			for (int j = 1; j <= currentProductFreq; j++) {
 	    		int productFrequency = gsc.getProductFrequency(Integer.parseInt(productCode3));
 				gs = gsc.getGroceryItem(productCode3, productFrequency);
-	    		gs.setProductFrequency(productFrequency);
+	    		gs.setFrequency(productFrequency);
 				totalPrice += gsc.calculateProduct(gs);
 				groupOfProducts.add(gs);
 			}

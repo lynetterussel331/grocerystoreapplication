@@ -8,7 +8,7 @@ import java.util.Scanner;
 import com.titusgt.grocerystoreapplication.utils.Constants;
 import com.titusgt.grocerystoreapplication.utils.Validation;
 import com.titusgt.grocerystoreapplication.view.Receipt;
-import com.titusgt.grocerystoreapplication.model.GroceryStore;
+import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.service.GroceryStoreService;
 
 public class GroceryStoreApplication {
@@ -17,7 +17,7 @@ public class GroceryStoreApplication {
 		
 		Scanner scanner = new Scanner(System.in);
 		
-		List<GroceryStore> groupOfProducts = new ArrayList<GroceryStore>();
+		List<Product> groupOfProducts = new ArrayList<Product>();
 		
 		GroceryStoreService gss = new GroceryStoreService();
 		GroceryStoreCalculator gsc = new GroceryStoreCalculator();
@@ -28,7 +28,6 @@ public class GroceryStoreApplication {
 		DecimalFormat df = new DecimalFormat("#,##0.00");
 		double totalPrice = 0.0;
 
-		// DISPLAY LIST OF SPECIAL PROMOTIONS
 		System.out.println("============ SPECIAL PROMOTIONS =============");
 		gss.displayItemsByProductType(Constants.SALE);
 		System.out.println("=============================================");
@@ -44,19 +43,19 @@ public class GroceryStoreApplication {
 
 					int productFrequency = gsc.getProductFrequency(Integer.parseInt(productCode));
 					
-					GroceryStore gs = gsc.getGroceryItem(productCode, productFrequency);
-					GroceryStore gsBought = new GroceryStore();
+					Product gs = gsc.getGroceryItem(productCode, productFrequency);
+					Product gsBought = new Product();
 					
 					if (gs != null) {
 						
-						System.out.println("Product Name:\t" + gs.getProductName());
+						System.out.println("Product Name:\t" + gs.getName());
 						
-						gsBought.setProductCode(gs.getProductCode());
-						gsBought.setProductName(gs.getProductName());
-						gsBought.setProductType(gs.getProductType());
+						gsBought.setCode(gs.getCode());
+						gsBought.setName(gs.getName());
+						gsBought.setType(gs.getType());
 						gsBought.setPrice(gs.getPrice());
 						
-						if (gs.getProductType().equals(Constants.BULK)) {
+						if (gs.getType().equals(Constants.BULK)) {
 
 							System.out.println("Price: \t\t" + df.format(gs.getPrice()) + "/kg");
 							System.out.print("Weight: \t");
@@ -70,10 +69,10 @@ public class GroceryStoreApplication {
 								errMsg = "Invalid weight!";
 							}
 							
-						} else if (gs.getProductType().equals(Constants.SALE)) {
+						} else if (gs.getType().equals(Constants.SALE)) {
 							
 							gsBought.setSaleType(gs.getSaleType());
-							gsBought.setProductFrequency(gs.getProductFrequency());
+							gsBought.setFrequency(gs.getFrequency());
 						}
 						
 						if (errMsg.isEmpty()) {
@@ -84,7 +83,7 @@ public class GroceryStoreApplication {
 							System.out.println("Subtotal: \t" + df.format(gsBought.getPrice()));
 							System.out.println("Total Price: \t" + df.format(totalPrice));
 						} else {
-							gsc.setProductFrequency(gs.getProductCode(), -1);
+							gsc.setProductFrequency(gs.getCode(), -1);
 						}
 						
 					} else {

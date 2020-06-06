@@ -2,7 +2,7 @@ package com.titusgt.grocerystoreapplication;
 
 import java.util.HashMap;
 
-import com.titusgt.grocerystoreapplication.model.GroceryStore;
+import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.service.GroceryStoreService;
 import com.titusgt.grocerystoreapplication.utils.Constants;
 
@@ -10,14 +10,14 @@ public class GroceryStoreCalculator {
 
 	HashMap<Integer,Integer> productFrequency = new HashMap<Integer,Integer>();
 	
-	public double calculateProduct(GroceryStore gs) {
+	public double calculateProduct(Product gs) {
 		
 		double totalPrice = 0;
 		
 		try {
 			if (gs != null) {
 				
-				if (gs.getProductType().equals(Constants.SALE) && gs.getProductFrequency()%2 == 0){
+				if (gs.getType().equals(Constants.SALE) && gs.getFrequency()%2 == 0){
 					totalPrice = 0;
 				} else {
 					totalPrice = gs.getPrice();
@@ -30,7 +30,7 @@ public class GroceryStoreCalculator {
 		return totalPrice;
 	}
 	
-	public GroceryStore getGroceryItem(String productCode, int productFrequency) {
+	public Product getGroceryItem(String productCode, int productFrequency) {
 		
 		return new GroceryStoreService().getItem(Integer.parseInt(productCode), productFrequency);
 	}

@@ -8,13 +8,13 @@ import java.util.Collections;
 import java.util.List;
 
 import com.titusgt.grocerystoreapplication.utils.Constants;
-import com.titusgt.grocerystoreapplication.model.GroceryStore;
+import com.titusgt.grocerystoreapplication.model.Product;
 
 public class Receipt {
 
-	public String printReceipt(List<GroceryStore> productList) {
+	public String printReceipt(List<Product> productList) {
 
-		Collections.sort(productList,GroceryStore.COMPARE_BY_PRODUCTNAME);
+		Collections.sort(productList, Product.COMPARE_BY_PRODUCTNAME);
 		
 		System.out.println("Printing receipt...");
 		
@@ -28,12 +28,12 @@ public class Receipt {
 		
 		sb.append("\t\t\t\t\t\tPHP\n");
 		
-		for (GroceryStore gs : productList) {
-			sb.append(gs.getProductName() + "\t\t\t\t\t" + df.format(gs.getPrice()) + "\n");
+		for (Product gs : productList) {
+			sb.append(gs.getName() + "\t\t\t\t\t" + df.format(gs.getPrice()) + "\n");
 			
-			if (gs.getProductType().equals(Constants.BULK)) {
+			if (gs.getType().equals(Constants.BULK)) {
 				sb.append("- 1 @ " + df.format(gs.getPrice() / gs.getWeight()) + "\tX " + gs.getWeight() + "KG\n");
-			} else if (gs.getProductType().equals(Constants.SALE) && gs.getPrice() == 0) {
+			} else if (gs.getType().equals(Constants.SALE) && gs.getPrice() == 0) {
 				sb.append("- " + gs.getSaleType() + "\n");
 			}
 			

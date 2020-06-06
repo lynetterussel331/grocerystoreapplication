@@ -6,7 +6,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import com.titusgt.grocerystoreapplication.model.GroceryStore;
+import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.utils.Constants;
 import com.titusgt.grocerystoreapplication.utils.Utils;
 import com.titusgt.grocerystoreapplication.utils.Validation;
@@ -14,7 +14,7 @@ import com.titusgt.grocerystoreapplication.utils.Validation;
 public class CalculateTestSingle
 {
 
-	private GroceryStore gs = new GroceryStore();
+	private Product gs = new Product();
 	private GroceryStoreCalculator gsc = new GroceryStoreCalculator();
 	private ProductPrice extract = new ProductPrice();
 	private Random rand = new Random();
@@ -66,7 +66,7 @@ public class CalculateTestSingle
     	for (int i = 1; i <= freq; i++) {
     		int productFrequency = gsc.getProductFrequency(Integer.parseInt(product));
     		gs = gsc.getGroceryItem(product, productFrequency);
-    		gs.setProductFrequency(productFrequency);
+    		gs.setFrequency(productFrequency);
     		totalPrice += gsc.calculateProduct(gs);
     	}
     	
@@ -89,7 +89,7 @@ public class CalculateTestSingle
 		
 		gs = gsc.getGroceryItem(product, 0);
 		
-		if (gs != null && !gs.getProductType().equals(Constants.PIECE)) {
+		if (gs != null && !gs.getType().equals(Constants.PIECE)) {
 			gs = null;
 		}
 		
@@ -103,7 +103,7 @@ public class CalculateTestSingle
 		
 		gs = gsc.getGroceryItem(product, 0);
 		
-		if (gs != null && !gs.getProductType().equals(Constants.BULK)) {
+		if (gs != null && !gs.getType().equals(Constants.BULK)) {
 			gs = null;
 		}
 		
@@ -116,7 +116,7 @@ public class CalculateTestSingle
 		String product = (rand.nextInt(20) + 11) + ""; // PRODUCT CODE NOT 7-10
 		
 		gs = gsc.getGroceryItem(product, 0);
-		if (gs != null && !gs.getProductType().equals(Constants.SALE)) {
+		if (gs != null && !gs.getType().equals(Constants.SALE)) {
 			gs = null;
 		}
 		
