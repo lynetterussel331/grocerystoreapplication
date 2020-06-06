@@ -2,20 +2,20 @@ package com.titusgt.grocerystoreapplication;
 
 import static org.junit.Assert.*;
 
+import com.titusgt.grocerystoreapplication.utils.ProductType;
+import java.math.BigDecimal;
 import java.util.Random;
 
 import org.junit.Test;
 
 import com.titusgt.grocerystoreapplication.model.Product;
-import com.titusgt.grocerystoreapplication.utils.Constants;
-import com.titusgt.grocerystoreapplication.utils.Utils;
 import com.titusgt.grocerystoreapplication.utils.Validation;
 
 public class CalculateTestSingle
 {
 
-	private Product gs = new Product();
-	private GroceryStoreCalculator gsc = new GroceryStoreCalculator();
+	private Product product = new Product();
+	private GroceryStoreCalculator calculator = new GroceryStoreCalculator();
 	private ProductPrice extract = new ProductPrice();
 	private Random rand = new Random();
 
@@ -24,14 +24,11 @@ public class CalculateTestSingle
 	   	
 		String product = (rand.nextInt(3) + 1) + ""; // PRODUCT CODE: 1-3
     	
-		gs = gsc.getGroceryItem(product, 0);
-    	double totalPrice = gsc.calculateProduct(gs);
-    	double expectedPrice = extract.extractItemPrice(product, Constants.PIECE);
-    	
-    	expectedPrice = Utils.round(expectedPrice,2);
-		totalPrice = Utils.round(totalPrice,2);
-		
-    	assertEquals(expectedPrice, totalPrice, 0);
+		this.product = calculator.getGroceryItem(product, 0);
+    	BigDecimal totalPrice = calculator.calculateProduct(this.product);
+		BigDecimal expectedPrice = extract.extractItemPrice(product, ProductType.PIECE.get());
+
+    	assert(expectedPrice.compareTo(totalPrice) == 0);
     }
 	
 	@Test
@@ -40,17 +37,15 @@ public class CalculateTestSingle
 		String product = (rand.nextInt(3) + 4) + ""; // PRODUCT CODE: 4-6
 		int weight = rand.nextInt(10) + 1;
 
-		gs = gsc.getGroceryItem(product, 0);
-		gs.setWeight(weight);
-		gs.setPrice(gs.getPrice() * weight);
-		
-    	double totalPrice = gsc.calculateProduct(gs);
-    	double expectedPrice = extract.extractItemPrice(product, Constants.BULK) * weight;
+		this.product = calculator.getGroceryItem(product, 0);
+		this.product.setWeight(weight);
+		this.product.setPrice(this.product.getPrice().multiply(BigDecimal.valueOf(weight)));
 
-    	expectedPrice = Utils.round(expectedPrice,2);
-		totalPrice = Utils.round(totalPrice,2);
-		
-    	assertEquals(expectedPrice, totalPrice, 0);
+		BigDecimal totalPrice = calculator.calculateProduct(this.product);
+		BigDecimal expectedPrice = extract.extractItemPrice(product, ProductType.BULK.get())
+			.multiply(BigDecimal.valueOf(weight));
+
+    	assert(expectedPrice.compareTo(totalPrice) == 0);
     }
 	
 	@Test
@@ -59,25 +54,26 @@ public class CalculateTestSingle
 		String product = (rand.nextInt(4) + 7) + ""; // PRODUCT CODE: 7-10
     	int freq = rand.nextInt(10) + 1;
 
-    	double totalPrice = 0;
-    	double extractedItemPrice = 0;
-    	double expectedPrice = 0;
+    	BigDecimal totalPrice = new BigDecimal(0);
+		BigDecimal extractedItemPrice = new BigDecimal(0);
+		BigDecimal expectedPrice = new BigDecimal(0);
     	
     	for (int i = 1; i <= freq; i++) {
-    		int productFrequency = gsc.getProductFrequency(Integer.parseInt(product));
-    		gs = gsc.getGroceryItem(product, productFrequency);
-    		gs.setFrequency(productFrequency);
-    		totalPrice += gsc.calculateProduct(gs);
+    		int productFrequency = calculator.getProductFrequency(Integer.parseInt(product));
+    		this.product = calculator.getGroceryItem(product, productFrequency);
+    		this.product.setFrequency(productFrequency);
+    		totalPrice = totalPrice.add(calculator.calculateProduct(this.product));
     	}
     	
     	// Computing expected Price
-    	extractedItemPrice = extract.extractItemPrice(product, Constants.SALE);
-    	expectedPrice = (freq%2==0 ? (extractedItemPrice * freq / 2) : (extractedItemPrice * (int)(freq/2+1)));
-    	
-    	expectedPrice = Utils.round(expectedPrice,2);
-		totalPrice = Utils.round(totalPrice,2);
-		
-    	assertEquals(expectedPrice, totalPrice, 0);
+    	extractedItemPrice = extract.extractItemPrice(product, ProductType.SALE.get());
+    	if (freq % 2 == 0) {
+			expectedPrice = extractedItemPrice.multiply(BigDecimal.valueOf(freq / 2));
+		} else {
+			expectedPrice = extractedItemPrice.multiply(BigDecimal.valueOf(freq / 2 + 1));
+		}
+
+    	assert(expectedPrice.compareTo(totalPrice) == 0);
     }
 	
 	// NEGATIVE SCENARIOS
@@ -87,13 +83,13 @@ public class CalculateTestSingle
 		
 		String product = (rand.nextInt(20) + 4) + ""; // PRODUCT CODE NOT 1-3
 		
-		gs = gsc.getGroceryItem(product, 0);
+		this.product = calculator.getGroceryItem(product, 0);
 		
-		if (gs != null && !gs.getType().equals(Constants.PIECE)) {
-			gs = null;
+		if (this.product != null && !this.product.getType().equals(ProductType.PIECE.get())) {
+			this.product = null;
 		}
 		
-    	assertNull(gs);
+    	assertNull(this.product);
 	}
 	
 	@Test
@@ -101,26 +97,26 @@ public class CalculateTestSingle
 		
 		String product = (rand.nextInt(20) + 7) + ""; // PRODUCT CODE NOT 4-6
 		
-		gs = gsc.getGroceryItem(product, 0);
+		this.product = calculator.getGroceryItem(product, 0);
 		
-		if (gs != null && !gs.getType().equals(Constants.BULK)) {
-			gs = null;
+		if (this.product != null && !this.product.getType().equals(ProductType.BULK.get())) {
+			this.product = null;
 		}
 		
-    	assertNull(gs);
+    	assertNull(this.product);
 	}
 	
 	@Test
     public void calculateSaleNotExisting() {
-		
+
 		String product = (rand.nextInt(20) + 11) + ""; // PRODUCT CODE NOT 7-10
-		
-		gs = gsc.getGroceryItem(product, 0);
-		if (gs != null && !gs.getType().equals(Constants.SALE)) {
-			gs = null;
+
+		this.product = calculator.getGroceryItem(product, 0);
+		if (this.product != null && !this.product.getType().equals(ProductType.SALE.get())) {
+			this.product = null;
 		}
-		
-    	assertNull(gs);
+
+    	assertNull(this.product);
 	}
 	
 	@Test

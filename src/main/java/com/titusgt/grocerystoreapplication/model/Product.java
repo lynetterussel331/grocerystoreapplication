@@ -1,5 +1,6 @@
 package com.titusgt.grocerystoreapplication.model;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,21 +12,21 @@ public class Product {
     private int code;
 	private String name;
 	private String type;
-	private double price;
+	private BigDecimal price;
 	private double weight;
 	private String saleType;
 	private int frequency;
 
 	public Product() {}
 
-	public Product(int code, String name, String type, double price) {
+	public Product(int code, String name, String type, BigDecimal price) {
 		this.code = code;
 		this.name = name;
 		this.type = type;
 		this.price = price;
 	}
 
-	public Product(int code, String name, String type, double price, String saleType) {
+	public Product(int code, String name, String type, BigDecimal price, String saleType) {
 		this.code = code;
 		this.name = name;
 		this.type = type;

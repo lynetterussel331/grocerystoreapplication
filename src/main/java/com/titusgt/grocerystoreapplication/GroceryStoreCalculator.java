@@ -1,30 +1,31 @@
 package com.titusgt.grocerystoreapplication;
 
+import com.titusgt.grocerystoreapplication.utils.ProductType;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import com.titusgt.grocerystoreapplication.model.Product;
 import com.titusgt.grocerystoreapplication.service.GroceryStoreService;
-import com.titusgt.grocerystoreapplication.utils.Constants;
 
 public class GroceryStoreCalculator {
 
 	HashMap<Integer,Integer> productFrequency = new HashMap<Integer,Integer>();
 	
-	public double calculateProduct(Product gs) {
+	public BigDecimal calculateProduct(Product gs) {
 		
-		double totalPrice = 0;
+		BigDecimal totalPrice = new BigDecimal(0);
 		
 		try {
 			if (gs != null) {
 				
-				if (gs.getType().equals(Constants.SALE) && gs.getFrequency()%2 == 0){
-					totalPrice = 0;
+				if (gs.getType().equals(ProductType.SALE.get()) && gs.getFrequency()%2 == 0){
+					totalPrice = new BigDecimal(0);
 				} else {
 					totalPrice = gs.getPrice();
 				}
 			}
 		} catch (Exception ex) {
-			return 0;
+			return new BigDecimal(0);
 		}
 	
 		return totalPrice;
